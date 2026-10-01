@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+const API_BASE_URL = (
+  import.meta.env.VITE_API_URL || '/api'
+).replace(/\/$/, '')
+
 function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,7 +35,7 @@ function App() {
     }
 
     try {
-      const response = await fetch('/api/products', {
+      const response = await fetch(`${API_BASE_URL}/products`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -65,7 +69,7 @@ function App() {
     setLoading(true)
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -150,14 +154,17 @@ function App() {
       clearForm()
 
       try {
-        const response = await fetch(`/api/products/${editingId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formProduct),
-        })
+        const response = await fetch(
+          `${API_BASE_URL}/products/${editingId}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(formProduct),
+          }
+        )
 
         const data = await response.json()
 
@@ -203,7 +210,7 @@ function App() {
     clearForm()
 
     try {
-      const response = await fetch('/api/products', {
+      const response = await fetch(`${API_BASE_URL}/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -279,12 +286,15 @@ function App() {
     setMessage('')
 
     try {
-      const response = await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      const response = await fetch(
+        `${API_BASE_URL}/products/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
 
       const data = await response.json()
 
